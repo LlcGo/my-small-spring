@@ -14,6 +14,7 @@ import org.junit.Test;
  */
 
 public class TestBeanFactory {
+
    //初始化bean
    BeanDefinition beanDefinition = new BeanDefinition(new UserService());
 
