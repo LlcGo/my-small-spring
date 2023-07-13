@@ -20,11 +20,15 @@ day02 迭代更新Bean容器
     + AbstractAutowireCapableBeanFactory.class 创建bean 放入容器 
     + DefaultListableBeanFactory.class 获取 bean
  
-
 7/11
 day03 解决容器不能生成只能无参构造类的问题
 + 使用策略模式来选择构造有参的类
   + java 原始
   + cglib 
+
+7/13
+day04 解决类的属性注入问题
+ + 建立一个属性类pojo ，可能有多个属性类，在添加一个存储多个pojo的类，并且设置添加
+ + 判断是否是对象类型注入，需要设置一个类来判断 BeanReference 
 
    
