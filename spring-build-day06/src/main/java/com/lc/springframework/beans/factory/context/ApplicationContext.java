@@ -1,5 +1,7 @@
 package com.lc.springframework.beans.factory.context;
 
+import com.lc.springframework.beans.factory.ListableBeanFactory;
+
 /**
  * @Author Lc
  * @Date 2023/7/15
@@ -8,5 +10,5 @@ package com.lc.springframework.beans.factory.context;
  * @Description: 上下文接口
  */
 
-public interface ApplicationContext {
+public interface ApplicationContext extends ListableBeanFactory {
 }

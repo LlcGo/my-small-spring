@@ -1,5 +1,8 @@
 package com.lc.springframework.beans.factory.config;
 
+import com.lc.springframework.beans.BeansException;
+import com.lc.springframework.beans.factory.ConfigurableListableBeanFactory;
+
 /**
  * @Author Lc
  * @Date 2023/7/15
@@ -9,4 +12,7 @@ package com.lc.springframework.beans.factory.config;
  */
 
 public interface BeanFactoryPostProcessor {
+
+    void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)throws BeansException;
+
 }

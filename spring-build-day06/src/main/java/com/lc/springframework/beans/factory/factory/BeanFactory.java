@@ -1,5 +1,7 @@
 package com.lc.springframework.beans.factory.factory;
 
+import com.lc.springframework.beans.BeansException;
+
 /**
  * @Author Lc
  * @Date 2023/7/11
@@ -19,4 +21,6 @@ public interface BeanFactory {
      * @return
      */
     Object getBean(String name, Object... args);
+
+    <T> T getBean(String name, Class<T> requiredType) throws BeansException;
 }
