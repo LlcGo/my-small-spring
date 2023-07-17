@@ -46,6 +46,10 @@ day5 将所有注入的信息设置到配置中
   + 最后用一个类继承这个抽象类来实现最后的解析方法
   
 7/15 
-day6 使用上下文来创建bean(直接一类拥有，配置文件和创建工厂的功能)
-  
-         
+day6 
+1.使用上下文来创建bean(直接一类拥有，配置文件和创建工厂的功能)
++ 新建一个能够直接构造的时候就可以驱动所有流程的类（上下文ClassPathXmlApplicationContext）
+  + 真正实现这个集合起来的类是AbstractApplicationContext 他实现了beanFactory 和 DefaultResourceLoader
+2.怎么加接口可以是的用户在构造bean赋值前和赋值后做一些扩展的  
+  + 定义BeanPostProcessor和BeanPostProcessor俩个接口里面写上赋值的方法
+  + 之后在 AbstractApplicationContext 的 refresh() 获取bean工厂之后执行俩个方法
