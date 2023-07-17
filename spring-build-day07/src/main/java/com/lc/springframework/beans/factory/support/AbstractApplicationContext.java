@@ -48,6 +48,18 @@ public abstract  class AbstractApplicationContext extends DefaultResourceLoader 
         }
     }
 
+    //虚拟机钩子调用了这个colse方法
+    @Override
+    public void registerShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
+    }
+
+    //手动关闭
+    @Override
+    public void close() {
+        getBeanFactory().destroySingletons();
+    }
+
     @Override
     public <T> Map<String, T> getBeansOfType(Class<T> type) throws BeansException {
         return getBeanFactory().getBeansOfType(type);

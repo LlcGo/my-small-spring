@@ -53,3 +53,15 @@ day6
 2.怎么加接口可以是的用户在构造bean赋值前和赋值后做一些扩展的  
   + 定义BeanPostProcessor和BeanPostProcessor俩个接口里面写上赋值的方法
   + 之后在 AbstractApplicationContext 的 refresh() 获取bean工厂之后执行俩个方法
+  
+7/17
+day07 添加bean初始化时候调用的方法 和 销毁 时候的方法
++ 初始化方法在 createbean的方法里面最后一步放入
+  新增初始化时候的接口 
++ 销毁的方法在 上下文类 的最后一步执行 也就是 调用Runtime.getRuntime().addShutdownHook(new Thread(this::close))虚拟机关闭的时候方法   
+  新增销毁的接口 
+1.如何做到一个类实现这个接口之后就能够执行？
+  在初始化的时候加入一个方法里面判断是否 属于这个接口的类如果属于就执行这个里面的方法
+  销毁的时候也是同理判断这个类是否是 属于这个接口
+  
+ 

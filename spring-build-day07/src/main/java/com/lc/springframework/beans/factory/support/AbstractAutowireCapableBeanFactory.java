@@ -1,14 +1,16 @@
 package com.lc.springframework.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.lc.springframework.beans.BeansException;
 import com.lc.springframework.beans.PropertyValue;
 import com.lc.springframework.beans.PropertyValues;
 import com.lc.springframework.beans.factory.config.BeanPostProcessor;
 import com.lc.springframework.beans.factory.factory.AutowireCapableBeanFactory;
 import com.lc.springframework.beans.factory.factory.BeanDefinition;
-
+import com.lc.springframework.beans.factory.factory.InitializingBean;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * @Author Lc
@@ -34,11 +36,31 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
-
+        //注册销毁的时候执行的方法
+        registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
         addSingleton(beanName, bean);
         return bean;
     }
 
+    /**
+     * 创建bean的时候将销毁的方法注入 让是配置有值
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     */
+    private void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        if (StrUtil.isNotBlank(beanName) || StrUtil.isNotBlank(beanDefinition.getDestroyMethodName())){
+            registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
+        }
+    }
+
+    /**
+     * 根据反射创建单例bean
+     * @param beanDefinition
+     * @param beanName
+     * @param args
+     * @return
+     */
     protected Object createBeanInstance(BeanDefinition beanDefinition, String beanName, Object[] args) {
         Constructor constructorToUse = null;
         Class<?> beanClass = beanDefinition.getBeanClass();
@@ -76,6 +98,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         }
     }
 
+    /**
+     * 返回单例bean
+     * @return
+     */
     public InstantiationStrategy getInstantiationStrategy() {
         return instantiationStrategy;
     }
@@ -84,22 +110,55 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         this.instantiationStrategy = instantiationStrategy;
     }
 
+    //实例化bean
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
         // 1. 执行 BeanPostProcessor Before 处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
 
         // 待完成内容：invokeInitMethods(beanName, wrappedBean, beanDefinition);
-        invokeInitMethods(beanName, wrappedBean, beanDefinition);
+        try {
+            invokeInitMethods(beanName, wrappedBean, beanDefinition);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         // 2. 执行 BeanPostProcessor After 处理
         wrappedBean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
         return wrappedBean;
     }
 
-    private void invokeInitMethods(String beanName, Object wrappedBean, BeanDefinition beanDefinition) {
+    /**
+     * 初始化bean的时候执行初始化方法
+     * @param beanName
+     * @param wrappedBean
+     * @param beanDefinition
+     * @throws Exception
+     */
+    private void invokeInitMethods(String beanName, Object wrappedBean, BeanDefinition beanDefinition) throws Exception {
+          //如果是实现了InitializingBean 直接执行这个方法
+        if(wrappedBean instanceof InitializingBean){
+            ((InitializingBean)wrappedBean).afterPropertiesSet();
+        }
 
+        //如果是xml里面配置了的话
+        String initMethodName = beanDefinition.getInitMethodName();
+        if(StrUtil.isNotEmpty(initMethodName)){
+            Method method = beanDefinition.getBeanClass().getMethod(initMethodName);
+            if (null == method) {
+                throw new BeansException("Could not find an init method named '" + initMethodName + "' on bean with name '" + beanName + "'");
+            }
+            method.invoke(wrappedBean);
+        }
     }
 
+    /**
+     * 初始化bean前执行
+     * @param existingBean
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
     @Override
     public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName) throws BeansException {
         Object result = existingBean;
@@ -111,6 +170,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return result;
     }
 
+    /**
+     * 初始化bean之后执行
+     * @param existingBean
+     * @param beanName
+     * @return
+     * @throws BeansException
+     */
     @Override
     public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException {
         Object result = existingBean;

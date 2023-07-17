@@ -1,4 +1,5 @@
 import com.lc.springframework.beans.factory.support.ClassPathXmlApplicationContext;
+import org.junit.Test;
 
 /**
  * @Author Lc
@@ -8,7 +9,7 @@ import com.lc.springframework.beans.factory.support.ClassPathXmlApplicationConte
  * @Description:
  */
 
-public class Test {
+public class Test1 {
     @Test
     public void test_xml() {
         // 1.初始化 BeanFactory
