@@ -7,7 +7,7 @@ import com.lc.springframework.beans.PropertyValues;
  * @Date 2023/7/11
  * @PackageName: com.lc.springframework.beans.factory.factory
  * @ClassName: BeanDefinition
- * @Description:  bean 对象 pojo
+ * @Description:  bean 对象 pojo     第一步  BeanDefinition
  */
 
 public class BeanDefinition {

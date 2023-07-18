@@ -11,10 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @ClassName: BeanFactory
  * @Description: Bean 注册 和 生产 的 工厂
  */
+
 public class BeanFactory {
 
     private Map <String,BeanDefinition> beanMap = new ConcurrentHashMap<String,BeanDefinition>();
-
 
     public BeanDefinition getBeanDefinition(String name){
         return beanMap.get(name);

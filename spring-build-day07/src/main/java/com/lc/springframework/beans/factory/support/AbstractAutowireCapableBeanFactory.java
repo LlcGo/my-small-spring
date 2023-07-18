@@ -43,7 +43,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     /**
-     * 创建bean的时候将销毁的方法注入 让是配置有值
+     * 在创建bean的时候将销毁的方法注入 让是配置有值！！！！！！！！！！！！！！！！！！！！
      * @param beanName
      * @param bean
      * @param beanDefinition
@@ -55,7 +55,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     /**
-     * 根据反射创建单例bean
+     * 根据反射创建单例bean    第二步   实例化阶段！！！！！！！！！！！
      * @param beanDefinition
      * @param beanName
      * @param args
@@ -75,7 +75,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     /**
-     * Bean 属性填充
+     * Bean 属性填充   第三步 属性赋值！！！！！！！！！！！！！直接就是类赋值穿什么进来就是什么
      */
     protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
         try {
@@ -111,6 +111,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     //实例化bean
+
+    /**
+     * 第四步      初始化的时候 1.初始化前调用方法 2.初始化中查看是否实现接口，是否有init配置 ！！！！！！！！！！！！！！
+     *            3.后置处理
+     * @param beanName
+     * @param bean
+     * @param beanDefinition
+     * @return
+     */
     private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
         // 1. 执行 BeanPostProcessor Before 处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);

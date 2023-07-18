@@ -15,6 +15,10 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 
     private ConfigurableListableBeanFactory beanFactory;
 
+    /**
+     * 加载xml资源和创建bean工厂
+     * @throws BeansException
+     */
     @Override
     protected void refreshBeanFactory() throws BeansException {
         DefaultListableBeanFactory beanFactory = createBeanFactory();

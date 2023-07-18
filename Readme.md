@@ -10,8 +10,8 @@ day01 Bean 容器存取实现核心思想
   + 注册 ：创建bean工厂，放入选定的容器中 key（name） - value（Object），value就是存入的初始化bean
   + 实现 ：写一个get方法，传入创建时候的key值 获取 bean 
   
-7/10
-day02 迭代更新Bean容器 
+7/10 一。 也就是bean生命周期的实例化阶段！！！ 原本的spring还添加了实例化前和实例化后的方法
+day02 迭代更新Bean容器  
 + Bean 注册的时候只注册一个类信息，而不会直接把实例化信息注册到 Spring 容器中
   + 把pojo中Bean的类型从object改为class从而内部实例化
 + 使用模板设计模式 AbstractBeanFactory.class
@@ -21,13 +21,13 @@ day02 迭代更新Bean容器
     + DefaultListableBeanFactory.class 获取 bean
  
 7/11
-day03 解决容器不能生成只能无参构造类的问题
-+ 使用策略模式来选择构造有参的类
+day03 增加容器内部生成构造器   
++ 使用策略模式来选择构造有参的类 
   + java 原始
   + cglib 
 
-7/13
-day04 解决类的属性注入问题
+7/13 二：属性赋值阶段！！！！
+day04 解决类的属性注入问题     
  + 建立一个属性类pojo ，可能有多个属性类，在添加一个存储多个pojo的类，并且设置添加
  + 判断是否是对象类型注入，需要设置一个类来判断 BeanReference 
 
@@ -45,16 +45,16 @@ day5 将所有注入的信息设置到配置中
   + 接下来用一个抽象类实现里面的获取资源和注册信息的方法
   + 最后用一个类继承这个抽象类来实现最后的解析方法
   
-7/15 
+7/15 三 初始化bean之前执行的方法和初始化之后执行的方法！！！！ 总体为初始化
 day6 
-1.使用上下文来创建bean(直接一类拥有，配置文件和创建工厂的功能)
+1.使用上下文来创建bean(直接一类拥有，配置文件和创建工厂的功能)  
 + 新建一个能够直接构造的时候就可以驱动所有流程的类（上下文ClassPathXmlApplicationContext）
   + 真正实现这个集合起来的类是AbstractApplicationContext 他实现了beanFactory 和 DefaultResourceLoader
 2.怎么加接口可以是的用户在构造bean赋值前和赋值后做一些扩展的  
   + 定义BeanPostProcessor和BeanPostProcessor俩个接口里面写上赋值的方法
   + 之后在 AbstractApplicationContext 的 refresh() 获取bean工厂之后执行俩个方法
   
-7/17
+7/17   四 再初始化的内部再加入 1.InitializingBean 和 2.init—method  并且定义最后一步销毁的方法
 day07 添加bean初始化时候调用的方法 和 销毁 时候的方法
 + 初始化方法在 createbean的方法里面最后一步放入
   新增初始化时候的接口 

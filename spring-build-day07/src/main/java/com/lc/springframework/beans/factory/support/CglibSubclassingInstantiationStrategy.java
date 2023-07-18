@@ -11,7 +11,7 @@ import java.lang.reflect.Constructor;
  * @Date 2023/7/12
  * @PackageName: com.lc.springframework.beans.factory.support
  * @ClassName: CglibSubclassingInstantiationStrategy
- * @Description: Cglib实现
+ * @Description: Cglib实现 第二步实例化 本来应该有实例化前和实例化后的方法，并没有实现
  */
 
 public class CglibSubclassingInstantiationStrategy implements InstantiationStrategy{
