@@ -1,8 +1,15 @@
-import com.lc.springframework.beans.factory.factory.DisposableBean;
-import com.lc.springframework.beans.factory.factory.InitializingBean;
-import org.omg.CORBA.PUBLIC_MEMBER;
+import com.lc.springframework.beans.BeansException;
+import com.lc.springframework.beans.factory.BeanClassLoaderAware;
+import com.lc.springframework.beans.factory.BeanFactoryAware;
+import com.lc.springframework.beans.factory.BeanNameAware;
+import com.lc.springframework.beans.factory.context.ApplicationContext;
+import com.lc.springframework.beans.factory.context.ApplicationContextAware;
+import com.lc.springframework.beans.factory.factory.BeanFactory;
 
-public class UserService implements InitializingBean, DisposableBean {
+public class UserService implements BeanNameAware, BeanClassLoaderAware, ApplicationContextAware, BeanFactoryAware {
+
+    private ApplicationContext applicationContext;
+    private BeanFactory beanFactory;
 
     private String uId;
     private String company;
@@ -10,19 +17,32 @@ public class UserService implements InitializingBean, DisposableBean {
     private UserDao userDao;
 
     @Override
-    public void destroy() throws Exception {
-        System.out.println("执行：UserService.destroy");
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out.println("执行：UserService.afterPropertiesSet");
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 
-    public String queryUserInfo(){
-        return toString();
+    @Override
+    public void setBeanName(String name) {
+        System.out.println("Bean Name is：" + name);
     }
 
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        System.out.println("ClassLoader：" + classLoader);
+    }
+
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
+    }
 
     public String getuId() {
         return uId;
@@ -55,14 +75,7 @@ public class UserService implements InitializingBean, DisposableBean {
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
-
-    @Override
-    public String toString() {
-        return "UserService{" +
-                "uId='" + uId + '\'' +
-                ", company='" + company + '\'' +
-                ", location='" + location + '\'' +
-                ", userDao=" + userDao +
-                '}';
+    public String queryUserInfo() {
+        return userDao.queryUserName(uId) + "," + company + "," + location;
     }
 }

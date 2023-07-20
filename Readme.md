@@ -55,7 +55,7 @@ day6
   + 之后在 AbstractApplicationContext 的 refresh() 获取bean工厂之后执行俩个方法
   
 7/17   四 再初始化的内部再加入 1.InitializingBean 和 2.init—method  并且定义最后一步销毁的方法
-day07 添加bean初始化时候调用的方法 和 销毁 时候的方法
+day08 添加bean初始化时候调用的方法 和 销毁 时候的方法
 + 初始化方法在 createbean的方法里面最后一步放入
   新增初始化时候的接口 
 + 销毁的方法在 上下文类 的最后一步执行 也就是 调用Runtime.getRuntime().addShutdownHook(new Thread(this::close))虚拟机关闭的时候方法   
@@ -65,3 +65,8 @@ day07 添加bean初始化时候调用的方法 和 销毁 时候的方法
   销毁的时候也是同理判断这个类是否是 属于这个接口
   
  
+7/20 
+day07  
+只需要实现特定的Aware接口就可以获得bean初始化中的一些值，并且做一些操作
++ 创建这几个接口，然后在初始化的时候根据instanceof判断来执行添加到哪个信息
++ 要获得 上下文的话需要在实例化的时候先添加进去
