@@ -4,6 +4,7 @@ import com.lc.springframework.beans.BeansException;
 import com.lc.springframework.beans.factory.config.BeanPostProcessor;
 import com.lc.springframework.beans.factory.config.ConfigurableBeanFactory;
 import com.lc.springframework.beans.factory.factory.BeanDefinition;
+import com.lc.springframework.beans.factory.factory.FactoryBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
  * @Description: 模板方法  主要实现获取bean  并且缓存
  */
 
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
+public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
 
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
 
@@ -31,13 +32,29 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
     }
 
     protected <T> T  doGetBean(String name, Object[] args){
-        Object bean = getSingleton(name);
-        if(bean != null){
-            return (T)bean;
+        Object sharedInstance = getSingleton(name);
+        if(sharedInstance != null){
+            return (T)getObjectForBeanInstance(sharedInstance, name);
         }
         BeanDefinition beanDefinition = getBeanDefinition(name);
-        return (T) createBean(name, beanDefinition, args);
-    };
+        Object bean = createBean(name, beanDefinition, args);
+        return (T)getObjectForBeanInstance(bean,name);
+    }
+
+    private Object getObjectForBeanInstance(Object beanInstance, String beanName) {
+        if (!(beanInstance instanceof FactoryBean)) {
+            return beanInstance;
+        }
+
+        Object object = getCachedObjectForFactoryBean(beanName);
+
+        if (object == null) {
+            FactoryBean<?> factoryBean = (FactoryBean<?>) beanInstance;
+            object = getObjectFromFactoryBean(factoryBean, beanName);
+        }
+
+        return object;
+    }
 
 
     public abstract BeanDefinition getBeanDefinition(String beanName);
