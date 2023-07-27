@@ -1,0 +1,25 @@
+package com.lc.springframework.aop;
+
+/**
+ * @Author Lc
+ * @Date 2023/7/27
+ * @PackageName: com.lc.springframework.aop
+ * @ClassName: TargetSource
+ * @Description:
+ */
+
+public class TargetSource {
+    private final Object target;
+
+    public TargetSource(Object target) {
+        this.target = target;
+    }
+
+    public Class<?>[] getTargetClass(){
+        return this.target.getClass().getInterfaces();
+    }
+
+    public Object getTarget(){
+        return this.target;
+    }
+}
