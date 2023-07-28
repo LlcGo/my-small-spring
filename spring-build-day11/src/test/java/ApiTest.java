@@ -16,7 +16,7 @@ public class ApiTest {
 
     @Test
     public void test_aop() throws NoSuchMethodException {
-        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut("execution(* *.UserService.*(..))");
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut("execution(* UserService.*(..))");
 
         Class<UserService> clazz = UserService.class;
         Method method = clazz.getDeclaredMethod("queryUserInfo");
@@ -63,7 +63,7 @@ public class ApiTest {
         // AOP 代理
         IUserService proxy = (IUserService) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), targetObj.getClass().getInterfaces(), new InvocationHandler() {
             // 方法匹配器
-            MethodMatcher methodMatcher = new AspectJExpressionPointcut("execution(* *.IUserService.*(..))");
+            MethodMatcher methodMatcher = new AspectJExpressionPointcut("execution(* IUserService.*(..))");
 
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
