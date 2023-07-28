@@ -25,8 +25,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     @Override
     public Object createBean(String beanName, BeanDefinition beanDefinition, Object[] args) throws BeansException {
+
         Object bean = null;
         try {
+            bean =  resolveBeforeInstantiation(beanName, beanDefinition);
+            if (null != bean) {
+                return bean;
+            }
             bean = createBeanInstance(beanDefinition, beanName, args);
             // 给 Bean 填充属性
             applyPropertyValues(beanName, bean, beanDefinition);
@@ -56,6 +61,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         if (StrUtil.isNotBlank(beanName) || StrUtil.isNotBlank(beanDefinition.getDestroyMethodName())){
             registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
         }
+    }
+
+    protected Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
+        Object bean = applyBeanPostProcessorsBeforeInitialization(beanDefinition.getBeanClass(), beanName);
+        if (null != bean) {
+            bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+        }
+        return bean;
     }
 
     /**
