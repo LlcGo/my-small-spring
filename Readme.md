@@ -1,6 +1,6 @@
 # 手写spring核心功能
 
-7/10
+## 7/10
 day01
 Bean 容器存取实现核心思想 
 + 选定好容器（HashMap）
@@ -10,8 +10,10 @@ Bean 容器存取实现核心思想
   + 定义 ：需要一个初始化的bean，可以注册进去（BeanDefinition）
   + 注册 ：创建bean工厂，放入选定的容器中 key（name） - value（Object），value就是存入的初始化bean
   + 实现 ：写一个get方法，传入创建时候的key值 获取 bean 
+
   
-7/10 
+  
+## 7/10 
 day02 
 迭代更新Bean容器  
 一。 也就是bean生命周期的实例化阶段！！！ 原本的spring还添加了实例化前和实例化后的方法
@@ -23,20 +25,20 @@ day02
     + AbstractAutowireCapableBeanFactory.class 创建bean 放入容器 
     + DefaultListableBeanFactory.class 获取 bean
  
-7/11
+## 7/11
 day03 
 增加容器内部生成构造器   
 + 使用策略模式来选择构造有参的类 
   + java 原始
   + cglib 
 
-7/13 
+## 7/13 
 day04 解决类的属性注入问题     
 二：属性赋值阶段！！！！
  + 建立一个属性类pojo ，可能有多个属性类，在添加一个存储多个pojo的类，并且设置添加
  + 判断是否是对象类型注入，需要设置一个类来判断 BeanReference 
 
-7/14
+## 7/14
 day5 
 将所有注入的信息设置到配置中
 1.如何读取文件？
@@ -51,7 +53,7 @@ day5
   + 接下来用一个抽象类实现里面的获取资源和注册信息的方法
   + 最后用一个类继承这个抽象类来实现最后的解析方法
   
-7/15 
+## 7/15 
 day6 
 三 初始化bean之前执行的方法和初始化之后执行的方法！！！！ 总体为初始化
 1.使用上下文来创建bean(直接一类拥有，配置文件和创建工厂的功能)  
@@ -61,7 +63,7 @@ day6
   + 定义BeanPostProcessor和BeanPostProcessor俩个接口里面写上赋值的方法
   + 之后在 AbstractApplicationContext 的 refresh() 获取bean工厂之后执行俩个方法
   
-7/17   
+## 7/17   
 day08 
 四 再初始化的内部再加入 1.InitializingBean 和 2.init—method  并且定义最后一步销毁的方法
 添加bean初始化时候调用的方法 和 销毁 时候的方法
@@ -74,26 +76,26 @@ day08
   销毁的时候也是同理判断这个类是否是 属于这个接口
   
  
-7/20 
+## 7/20 
 day07  
 只需要实现特定的Aware接口就可以获得bean初始化中的一些值，并且做一些操作
 + 创建这几个接口，然后在初始化的时候根据instanceof判断来执行添加到哪个信息
 + 要获得 上下文的话需要在实例化的时候先添加进去
 
-7/23
+## 7/23
 day09
 根据xml的scope来创建 是否为单例的对象
 + 主要是在创建bean的时候判断的时候根据已经读取的scope值来确定是否为单例模式，如果是那就添加到hashmap内存中不是就直接返回一个新的对象
 
-7/25
+## 7/25
 day10
 创建监听器监听spring的各种生命周期
 + 实现EventObject接口实现监听
 
-7/27
+## 7/27
 day11
 Aop代理
 
-7/28
+## 7/28
 day12
 将Aop代理融入spring容器
